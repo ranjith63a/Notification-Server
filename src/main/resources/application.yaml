@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: notification-server
+
+  kafka:
+    bootstrap-servers: kafka:9092
+
+    consumer:
+      group-id: notification-group
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+      properties:
+        spring.json.trusted.packages: com.microservices.student.event
+        spring.json.value.default.type: com.microservices.student.event.StudentCreatedEvent
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.debug: false
+
+server:
+  port: 8083
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.springframework.kafka: INFO
+    org.springframework.mail: INFO
